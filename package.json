@@ -1,0 +1,19 @@
+{
+  "name": "sonyabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bot": "node src/index.js",
+    "debug": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.53.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
