@@ -4,6 +4,22 @@ const db = require("./db")
 
 const video = "BAACAgIAAxkDAAIBf2C3SRVtELdY_Pu6-YHuoPO67hkHAAIDDgACSR_ASaJdmj5dymLfHwQ"
 
+function sendStatics(chatId) {
+    db.all("SELECT * FROM users_interview", (err, row) => {
+        let message = ""
+        message += `Кол-во пользователей, который прошли опрос: ${row.length}\n\n`
+        message += `Как часто вы занимаетесь медитацией?:\n`
+        message += `   Каждый день: ${row.filter(user => user.frequency === "every_day").length}\n`
+        message += `   Раз в неделю: ${row.filter(user => user.frequency === "once_week").length}\n`
+        message += `   Раз в месяц: ${row.filter(user => user.frequency === "once_month").length}\n`
+        message += `   Реже или Никогда: ${row.filter(user => user.frequency === "never").length}\n\n`
+        message += `соня крутая?:\n`
+        message += `   да: ${row.filter(user => user.sonya_cool === "yes").length}\n`
+        message += `   нет: ${row.filter(user => user.sonya_cool === "no").length}\n`
+        bot.sendMessage(chatId, message)
+    })
+}
+
 bot.onText(/(привет|\/start)/i, async msg => {
     console.log(`first_name: ${msg.from.first_name}`)
     console.log(`last_name: ${msg.from.last_name}`)
@@ -57,19 +73,7 @@ bot.onText(/опрос/i, async msg => {
 })
 
 bot.onText(/статистика/i, async msg => {
-    db.all("SELECT * FROM users_interview", (err, row) => {
-        let message = ""
-        message += `Кол-во пользователей, который прошли опрос: ${row.length}\n\n`
-        message += `Как часто вы занимаетесь медитацией?:\n`
-        message += `   Каждый день: ${row.filter(user => user.frequency === "every_day").length}\n`
-        message += `   Раз в неделю: ${row.filter(user => user.frequency === "once_week").length}\n`
-        message += `   Раз в месяц: ${row.filter(user => user.frequency === "once_month").length}\n`
-        message += `   Реже или Никогда: ${row.filter(user => user.frequency === "never").length}\n\n`
-        message += `соня крутая?:\n`
-        message += `   да: ${row.filter(user => user.sonya_cool === "yes").length}\n`
-        message += `   нет: ${row.filter(user => user.sonya_cool === "no").length}\n`
-        bot.sendMessage(msg.chat.id, message)
-    })
+    sendStatics(msg.chat.id)
 })
 
 bot.onText(/статьи/i, msg => {
@@ -152,6 +156,11 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
         bot.answerCallbackQuery(callbackQuery.id)
     }
 
+    if (action === "stats") {
+        sendStatics(callbackQuery.from.id)
+        bot.answerCallbackQuery(callbackQuery.id)
+    }
+
     if (action.split(" ")[0] === "interview") {
         const answer = action.split(" ")
         if (answer[1] === "1") {
@@ -190,6 +199,11 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
             bot.editMessageText("спасибо за ответы!", {
                 chat_id: callbackQuery.from.id,
                 message_id: callbackQuery.message.message_id,
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: "Посмотреть статистику", callback_data: "stats"}]
+                    ]
+                }
             })
         }
         bot.answerCallbackQuery(callbackQuery.id)
