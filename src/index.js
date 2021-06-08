@@ -9,6 +9,18 @@ function sendStatics (chatId) {
     bot.sendMessage(chatId, stats)
 }
 
+function makeInlineKeyboard (question) {
+    const inline_keyboard = []
+    question.answers.forEach((answers) => {
+        const inline_row = []
+        answers.forEach(answer => {
+            inline_row.push({ text: answer.text, callback_data: `interview ${question.id} ${answer.id}` })
+        })
+        inline_keyboard.push(inline_row)
+    })
+    return inline_keyboard
+}
+
 bot.onText(/(привет|\/start)/i, async msg => {
     console.log(`first_name: ${msg.from.first_name}`)
     console.log(`last_name: ${msg.from.last_name}`)
@@ -44,18 +56,10 @@ bot.onText(/видео/i, msg => {
 
 bot.onText(/опрос/i, async msg => {
     const chatId = msg.chat.id
+    const first_question = DATA.QUESTIONS[0]
     const opt = {
         reply_markup: {
-            inline_keyboard: [
-                [
-                    { text: 'Каждый день', callback_data: 'interview frequency every_day' },
-                    { text: 'Раз в неделю', callback_data: 'interview frequency once_week' }
-                ],
-                [
-                    { text: 'Раз в месяц', callback_data: 'interview frequency once_month' },
-                    { text: 'Реже или никогда', callback_data: 'interview frequency never' }
-                ]
-            ]
+            inline_keyboard: makeInlineKeyboard(first_question)
         }
     }
     bot.sendMessage(chatId, 'Как часто вы занимаетесь медитацией?', opt)
@@ -106,32 +110,30 @@ bot.on('callback_query', function onCallbackQuery (callbackQuery) {
 
     if (action.split(' ')[0] === 'interview') {
         const answer = action.split(' ')
-        if (answer[1] === 'frequency') {
-            Db.addNewAnswer(callbackQuery.from.id, answer)
-            bot.editMessageText('соня крутая', {
-                chat_id: callbackQuery.from.id,
-                message_id: callbackQuery.message.message_id,
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: 'да', callback_data: 'interview sonya_cool yes' },
-                            { text: 'нет', callback_data: 'interview sonya_cool no' }
-                        ]
-                    ]
-                }
-            })
-        } else if (answer[1] === 'sonya_cool') {
-            Db.addNewAnswer(callbackQuery.from.id, answer)
-            bot.editMessageText('спасибо за ответы!', {
-                chat_id: callbackQuery.from.id,
-                message_id: callbackQuery.message.message_id,
-                reply_markup: {
-                    inline_keyboard: [
-                        [{ text: 'Посмотреть статистику', callback_data: 'stats' }]
-                    ]
-                }
-            })
+        const currentlyOrder = DATA.QUESTIONS.find(t => t.id === answer[1]).order
+        const nextQuestion = DATA.QUESTIONS.find(t => t.order === currentlyOrder + 1)
+        let text
+        let inline_keyboard
+        if (nextQuestion) {
+            inline_keyboard = makeInlineKeyboard(nextQuestion)
+            text = nextQuestion.text
+        } else {
+            inline_keyboard = [[{ text: 'Посмотреть статистику', callback_data: 'stats' }]]
+            text = 'спасибо за ответы!'
         }
+        bot.editMessageText(text, {
+            chat_id: callbackQuery.from.id,
+            message_id: callbackQuery.message.message_id,
+            reply_markup: {
+                inline_keyboard: inline_keyboard
+            }
+        })
+        const info = {
+            username: callbackQuery.from.username,
+            first_name: callbackQuery.from.first_name,
+            last_name: callbackQuery.from.last_name
+        }
+        Db.addNewAnswer(callbackQuery.from.id, answer, info)
         bot.answerCallbackQuery(callbackQuery.id)
     }
 })
