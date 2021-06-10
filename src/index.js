@@ -68,13 +68,13 @@ bot.onText(/видео/i, msg => {
 
 bot.onText(/опрос/i, async msg => {
     const chatId = msg.chat.id
-    const first_question = DATA.QUESTIONS[0]
+    const first_question = DATA.QUESTIONS.find(q => q.order === 0)
     const opt = {
         reply_markup: {
             inline_keyboard: makeInlineKeyboard(first_question)
         }
     }
-    bot.sendMessage(chatId, 'Как часто вы занимаетесь медитацией?', opt)
+    bot.sendMessage(chatId, first_question.text, opt)
 })
 
 bot.onText(/статистика/i, async msg => {
