@@ -1,13 +1,20 @@
 const TelegramBot = require('node-telegram-bot-api')
 const Db = require('./db')
 const DATA = require('./DATA')
+const express = require('express')
+const bodyParser = require('body-parser')
 
 require('dotenv').config()
 
 const token = process.env.TELEGRAM_TOKEN
 let bot
 
-bot = new TelegramBot(token, { polling: true })
+if (process.env.NODE_ENV === 'production') {
+    bot = new TelegramBot(token)
+    bot.setWebHook(process.env.HEROKU_URL + bot.token)
+} else {
+    bot = new TelegramBot(token, { polling: true })
+}
 
 function sendStatics (chatId) {
     const stats = Db.makeStats()
@@ -144,3 +151,14 @@ bot.on('callback_query', function onCallbackQuery (callbackQuery) {
 })
 
 bot.on('polling_error', console.log)
+
+const app = express()
+
+app.use(bodyParser.json())
+
+app.listen(process.env.PORT || 5000)
+
+app.post('/' + bot.token, (req, res) => {
+    bot.processUpdate(req.body)
+    res.sendStatus(200)
+})
