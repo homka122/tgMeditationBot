@@ -2,7 +2,12 @@ const TelegramBot = require('node-telegram-bot-api')
 const Db = require('./db')
 const DATA = require('./DATA')
 
-const bot = new TelegramBot(DATA.TOKEN, { polling: true })
+require('dotenv').config()
+
+const token = process.env.TELEGRAM_TOKEN
+let bot
+
+bot = new TelegramBot(token, { polling: true })
 
 function sendStatics (chatId) {
     const stats = Db.makeStats()
