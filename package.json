@@ -13,11 +13,13 @@
   "dependencies": {
     "@types/better-sqlite3": "^5.4.1",
     "@types/node-telegram-bot-api": "^0.51.1",
-    "better-sqlite3": "^7.4.0",
+    "@types/pg": "^8.6.0",
+    "better-sqlite3": "^7.4.1",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "node-telegram-bot-api": "^0.53.0"
+    "node-telegram-bot-api": "^0.53.0",
+    "pg": "^8.6.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

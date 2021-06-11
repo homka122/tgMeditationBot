@@ -17,8 +17,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 function sendStatics (chatId) {
-    const stats = Db.makeStats()
-    bot.sendMessage(chatId, stats)
+    Db.makeStats().then(stats => {
+        console.log('stats')
+        bot.sendMessage(chatId, stats)
+    })
 }
 
 function makeInlineKeyboard (question) {
