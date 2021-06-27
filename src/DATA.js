@@ -1,12 +1,21 @@
 module.exports = {
     VIDEO: 'BAACAgIAAxkDAAIBf2C3SRVtELdY_Pu6-YHuoPO67hkHAAIDDgACSR_ASaJdmj5dymLfHwQ',
-    AUDIOS: [
-        'CQACAgIAAxkDAAIBLmC3RQkLmBD1OdY92W0HbTXLiqonAAL0DQACSR_ASaB4OMzSAv_-HwQ',
-        'CQACAgIAAxkDAAIBLWC3RQm_MrVmKa7G4MjEGyo1uuXGAAL1DQACSR_ASUDmsf5qGoqsHwQ',
-        'CQACAgIAAxkDAAIBLGC3RQneBzqnqTa6NkURQRPg1HF9AAL3DQACSR_ASdzd4ktj0ChaHwQ',
-        'CQACAgIAAxkDAAIBK2C3RQl7Wx2UmE5gDIRQgpVsUq2cAAL4DQACSR_ASeNAUkn9eWmXHwQ',
-        'CQACAgIAAxkDAAIBKmC3RQnVaweOZ-Z5aBBRV0mdKHE-AAL2DQACSR_ASVReeAr5ocHyHwQ'
-    ],
+    AUDIOS: {
+        sleep: [
+            'CQACAgIAAxkDAAIBLmC3RQkLmBD1OdY92W0HbTXLiqonAAL0DQACSR_ASaB4OMzSAv_-HwQ',
+            'CQACAgIAAxkDAAIBLWC3RQm_MrVmKa7G4MjEGyo1uuXGAAL1DQACSR_ASUDmsf5qGoqsHwQ',
+            'CQACAgIAAxkDAAIBLGC3RQneBzqnqTa6NkURQRPg1HF9AAL3DQACSR_ASdzd4ktj0ChaHwQ',
+            'CQACAgIAAxkDAAIBK2C3RQl7Wx2UmE5gDIRQgpVsUq2cAAL4DQACSR_ASeNAUkn9eWmXHwQ',
+            'CQACAgIAAxkDAAIBKmC3RQnVaweOZ-Z5aBBRV0mdKHE-AAL2DQACSR_ASVReeAr5ocHyHwQ'
+        ],
+        relax: [
+            'CQACAgIAAxkDAAIG-2DYLpU4Ij12burQD8i8mncZrLcPAAI5DgACchPASjx-48dX6cCtIAQ',
+            'CQACAgIAAxkDAAIG-mDYLpNYcpofv9F1ZPIAAQ0WQUcXdAACOA4AAnITwEpqpbxjPDb59iAE',
+            'CQACAgIAAxkDAAIHEWDYL0IkEPBV3EFVCytD8KVXowUjAAJEDgACchPASp0LjuWs7YWYIAQ',
+            'CQACAgIAAxkDAAIG_GDYLpWyS9Gcf6uWYaZ-AdARdU72AAI6DgACchPASmHa5M4czHCVIAQ',
+            'CQACAgIAAxkDAAIG_WDYLpamcKbxy60EhQRlrdnzpV6IAAI7DgACchPAStBUdvM5i4ccIAQ'
+        ]
+    },
     ARTICLES: [
         {
             url: 'https://wfc.tv/ru/stati/mindfulness/meditatsiya-dlya-nachinayushchikh-kak-pravilno-meditirovat',

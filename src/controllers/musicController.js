@@ -22,12 +22,20 @@ class MusicController {
         const params = JSON.parse(callback.data).params
         switch (params) {
             case 'sleep': {}
-                const mediaGroup = AUDIOS.map(audio => {
+                const mediaGroupSleep = AUDIOS.sleep.map(audio => {
                     return { type: 'audio', media: audio }
                 })
-                await bot.sendMediaGroup(chatId, mediaGroup)
+                await bot.sendMediaGroup(chatId, mediaGroupSleep)
                 break
             case 'relax':
+                // bot.sendAudio(chatId, path.resolve(__dirname, '../../media/audio/relax/Теплый летний вечер.mp3'), {
+                //     performer: 'SonyaBot'
+                // }).then(console.log)
+                const mediaGroupRelax = AUDIOS.relax.map(audio => {
+                    return { type: 'audio', media: audio }
+                })
+                await bot.sendMediaGroup(chatId, mediaGroupRelax)
+                break
             case 'meditation':
                 await bot.sendMessage(chatId, 'Будьте добры, Соня, отправить музыку для медитации хомке')
                 break
