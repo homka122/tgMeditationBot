@@ -75,13 +75,35 @@ module.exports = {
             ]
         },
         {
-            id: 'sonya_cool',
-            text: 'соня крутая?',
+            id: 'important',
+            text: 'Считаете ли вы медитацию необходимым навыком в современном мире?',
             order: 1,
             answers: [
                 [
-                    { id: 'yes', text: 'да' },
-                    { id: 'no', text: 'нет' },
+                    { id: 'yes', text: 'Да' },
+                    { id: 'no', text: 'Нет' }
+                ]
+            ]
+        },
+        {
+            id: 'attempt',
+            text: 'Была ли попытка ранее обучиться медитации?',
+            order: 2,
+            answers: [
+                [
+                    { id: 'yes', text: 'Да' },
+                    { id: 'no', text: 'Нет' }
+                ]
+            ]
+        },
+        {
+            id: 'like_bot',
+            text: 'Нравится ли вам данный телеграмм бот?',
+            order: 3,
+            answers: [
+                [
+                    { id: 'yes', text: 'Да' },
+                    { id: 'no', text: 'Нет' },
                 ]
             ]
         }
