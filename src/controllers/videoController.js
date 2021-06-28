@@ -1,9 +1,14 @@
 const bot = require('../bot')
-const { VIDEO } = require('../DATA')
+const { VIDEOS } = require('../DATA')
+const db = require('../db')
 
 const sendVideo = async (msg) => {
     const chatId = msg.chat.id
-    await bot.sendVideo(chatId, VIDEO)
+    await db.addToDatabase(chatId)
+    console.log((await db.getCounter(chatId)).counter)
+    const video = VIDEOS[(await db.getCounter(chatId)).counter % 4]
+    await bot.sendVideo(chatId, video)
+    await db.incrementCounter(chatId)
 }
 
 module.exports = sendVideo

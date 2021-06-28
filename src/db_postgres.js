@@ -22,6 +22,7 @@ class Db {
     async check_tables () {
         const answers_sql = 'CREATE TABLE answers(num SERIAL, id INTEGER, question TEXT, answer TEXT)'
         const users_sql = 'CREATE TABLE users(id INTEGER PRIMARY KEY, username TEXT, first_name TEXT, last_name TEXT)'
+        const video_counter_sql = 'CREATE TABLE video_counter(id INTEGER PRIMARY KEY, counter INTEGER DEFAULT 0)'
         const table_sql = 'SELECT * FROM information_schema.tables WHERE table_name = \'answers\' OR table_name = \'users\''
         const tables = await (await db.query(table_sql)).rows.map(t => t.table_name)
 
@@ -32,6 +33,10 @@ class Db {
         if (!tables.includes('users')) {
             await db.query(users_sql)
             console.log('Table "users" was created')
+        }
+        if (!tables.includes('video_counter')) {
+            await db.query(video_counter_sql)
+            console.log('Table "video_counter" was created')
         }
     }
 
@@ -77,6 +82,25 @@ class Db {
             const sql = `INSERT INTO users VALUES (${userId}, '${info.username}', '${info.first_name}', '${info.last_name}')`
             await db.query(sql)
             console.log('Информация о пользователе добавлена')
+        }
+    }
+
+    async incrementCounter(id) {
+        const sql = `UPDATE video_counter SET counter = counter + 1 WHERE id = ${id}`
+        await db.query(sql)
+    }
+
+    async getCounter(id) {
+        const sql = `SELECT counter FROM video_counter WHERE id = ${id}`
+        return (await db.query(sql)).rows[0]
+    }
+
+    async addToDatabase(id) {
+        const sql = `INSERT INTO video_counter(id) VALUES (${id})`
+        try {
+            await db.query(sql)
+        } catch {
+            return 0
         }
     }
 }
