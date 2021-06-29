@@ -37,7 +37,10 @@ class MusicController {
                 await bot.sendMediaGroup(chatId, mediaGroupRelax)
                 break
             case 'meditation':
-                await bot.sendMessage(chatId, 'Будьте добры, Соня, отправить музыку для медитации хомке')
+                const mediaGroupMeditation = AUDIOS.meditation.map(audio => {
+                    return { type: 'audio', media: audio }
+                })
+                await bot.sendMediaGroup(chatId, mediaGroupMeditation)
                 break
         }
         await bot.answerCallbackQuery(callback.id)
